@@ -1,0 +1,17 @@
+name = "roc-site"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Static assets (your HTML, images, etc.) are served by Cloudflare Pages.
+# The Worker handles /api/* routes only.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "roc-contacts"
+database_id = "b5cf8828-a7f9-4051-90bb-60534ec6f5b0"
+
+[routes]
+# This tells Workers to intercept only API calls;
+# everything else is served as a static file by Pages.
+pattern = "roconsulting.uk/api/*"
+zone_name = "roconsulting.uk"

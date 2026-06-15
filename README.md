@@ -1,195 +1,117 @@
-# Website Builder
+# ROC Consulting — Site Deployment Guide
 
-Build your own website hosting platform using [Cloudflare Workers for Platforms](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/). Users can create and deploy websites through a simple web interface.
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/workers-for-platforms-template)
-
-![Preview](preview.png)
-
-<!-- dash-content-start -->
-
-## Features
-
-- **Website Builder UI** - Web interface for creating and deploying sites
-- **Static Site Hosting** - Drag & drop HTML/CSS/JS files with automatic asset handling
-- **Custom Worker Code** - Write dynamic sites with full Workers capabilities
-- **Subdomain Routing** - Each site gets `sitename.yourdomain.com`
-- **Custom Domains** - Users can connect their own domains with automatic TLS certificates (powered by custom hostnames)
-- **Admin Dashboard** - Manage all sites and monitor deployment status at `/admin`
-
-## How It Works
-
-This template demonstrates how to build a multi-tenant platform using Workers for Platforms:
-
-1. **Dispatch Namespace** - A container that holds all user-deployed Workers. Each user site is a separate Worker script within this namespace.
-
-2. **D1 Database** - Stores project metadata including site names, subdomains, custom hostnames, and deployment timestamps.
-
-3. **Dynamic Routing** - The main Worker routes requests to the appropriate user Worker based on subdomain or custom hostname.
-
-4. **Custom Hostnames** - Enables custom domain support with automatic TLS certificate provisioning.
-
-## Bindings Used
-
-- **dispatcher** (Workers for Platforms) - Routes requests to user-deployed Workers
-- **DB** (D1) - Stores project metadata and configuration
-
-<!-- dash-content-end -->
-
----
-
-## Quick Start
-
-Click the **Deploy to Cloudflare** button above. Everything is auto-configured!
-
-### Optional: Custom Domain
-
-If you want to use your own domain instead of `*.workers.dev`:
-
-| Variable        | Description                             |
-| --------------- | --------------------------------------- |
-| `CUSTOM_DOMAIN` | Your root domain (e.g., `platform.com`) |
-
----
-
-## Architecture
+## Directory structure
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  Your Platform (this template)                              │
-├─────────────────────────────────────────────────────────────┤
-│  platform.com              → Website Builder UI             │
-│  platform.com/admin        → Admin Dashboard                │
-├─────────────────────────────────────────────────────────────┤
-│  User Sites (Workers for Platforms)                         │
-│  ├── site1.platform.com    → User's deployed Worker         │
-│  ├── site2.platform.com    → User's deployed Worker         │
-│  └── custom.userdomain.com → Custom domain with SSL         │
-├─────────────────────────────────────────────────────────────┤
-│  my.platform.com           → Fallback origin for CNAMEs     │
-└─────────────────────────────────────────────────────────────┘
+roc-site/
+├── index.html        ← main site
+├── worker.js         ← contact form backend (Cloudflare Worker)
+├── schema.sql        ← D1 database schema
+├── wrangler.toml     ← Worker configuration
+├── README.md         ← this file
+└── images/
+    ├── lobster-farms-vietnam.jpg
+    ├── fish-farm-kivu.jpg
+    ├── field-mission-cdi.jpg
+    ├── drone-survey-cdi.jpg
+    ├── government-presentation-abidjan.jpg
+    ├── fish-farm-aboisso.jpg
+    ├── seaweed-farm-vietnam.jpg
+    ├── lake-kivu-farm.jpg
+    ├── seaweed-harvest-vietnam.jpg
+    └── snail-survey-bandama.jpg
 ```
 
 ---
 
-## Local Development
+## Step 1 — Download your images from WordPress
+
+Each image below maps from its current WordPress URL to its local filename.
+Download each one and save it into the `images/` folder with the exact filename shown.
+
+| Save as | WordPress source URL |
+|---|---|
+| `lobster-farms-vietnam.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/20240926_103118.jpg |
+| `fish-farm-kivu.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/20240419_092922.jpg |
+| `field-mission-cdi.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/pxl_20220302_115852271.jpg |
+| `drone-survey-cdi.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/pxl_20220301_155545470.jpg |
+| `government-presentation-abidjan.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/img-20220303-wa0012.jpg |
+| `fish-farm-aboisso.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/pxl_20220311_073515007.jpg |
+| `seaweed-farm-vietnam.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/20240926_111756.jpg |
+| `lake-kivu-farm.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/timephoto_20240419_101307.jpg |
+| `seaweed-harvest-vietnam.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/20240926_112205.jpg |
+| `snail-survey-bandama.jpg` | https://ro-consulting.uk/wp-content/uploads/2025/10/img_0823.jpg |
+
+---
+
+## Step 2 — Deploy the static site to Cloudflare Pages
+
+1. Log in to https://dash.cloudflare.com
+2. Go to **Workers & Pages → Create → Pages → Upload assets**
+3. Name the project `roc-site`
+4. Upload the entire `roc-site/` folder (index.html + images/ folder)
+5. Click **Deploy site**
+6. Test the preview URL (e.g. `roc-site.pages.dev`) before pointing your domain
+
+---
+
+## Step 3 — Create the D1 database
+
+1. In Cloudflare dashboard → **Workers & Pages → D1 → Create database**
+2. Name it: `roc-contacts`
+3. Once created, click into it → **Console** tab
+4. Paste in the contents of `schema.sql` and click **Execute**
+5. Copy the **Database ID** shown on the database overview page
+6. Paste it into `wrangler.toml` replacing `REPLACE_WITH_YOUR_D1_DATABASE_ID`
+
+---
+
+## Step 4 — Deploy the Worker
+
+This requires Node.js installed on your computer.
 
 ```bash
-# Clone the repository
-git clone https://github.com/cloudflare/templates.git
-cd templates/workers-for-platforms-template
+# Install Wrangler (Cloudflare's CLI) if you haven't already
+npm install -g wrangler
 
-# Install dependencies
-npm install
+# Log in to your Cloudflare account
+wrangler login
 
-# Run interactive setup (creates tokens, configures everything)
-npm run setup
-
-# Start local development server
-npm run dev
-
-# Run tests
-npm test
+# From inside the roc-site/ folder:
+wrangler deploy
 ```
 
-The setup script will:
-
-- Validate your Cloudflare credentials
-- Create the dispatch namespace for Workers for Platforms
-- Auto-create API tokens with correct permissions (if needed)
-- Generate `.dev.vars` with all required configuration
-- Update `wrangler.jsonc` with your settings
+The Worker handles all POST requests to `roconsulting.uk/api/contact`.
+Everything else (the HTML and images) is served by Pages.
 
 ---
 
-## Custom Domain Setup
+## Step 5 — Connect your domain
 
-To use your own domain instead of `*.workers.dev`:
-
-### 1. Update `wrangler.jsonc`
-
-```jsonc
-{
-	"vars": {
-		"CUSTOM_DOMAIN": "platform.com",
-	},
-	"routes": [{ "pattern": "*/*", "zone_name": "platform.com" }],
-	"workers_dev": false,
-}
-```
-
-### 2. Add DNS Records
-
-In your Cloudflare DNS settings for `platform.com`:
-
-| Type | Name | Content     | Result            | Proxy   |
-| ---- | ---- | ----------- | ----------------- | ------- |
-| A    | `*`  | `192.0.2.1` | `*.platform.com`  | Proxied |
-| A    | `my` | `192.0.2.1` | `my.platform.com` | Proxied |
-
-> **Note:** The root domain (`platform.com`) is automatically configured when you add a custom domain to your Worker in the Cloudflare dashboard. The `192.0.2.1` is a dummy IP - Cloudflare's proxy handles the actual routing.
-
-**About the Fallback Origin (`my.platform.com`):**
-
-This is the hostname your customers will CNAME their custom domains to. When a user wants to connect their own domain (e.g., `shop.example.com`), they add:
-
-```
-CNAME  shop.example.com  →  my.platform.com
-```
-
-Cloudflare uses this fallback origin to route traffic for custom hostnames.
-
-### 3. Redeploy
-
-```bash
-npm run deploy
-```
+1. In your Pages project → **Custom Domains → Set up a custom domain**
+2. Enter `roconsulting.uk`
+3. If your domain DNS is already in Cloudflare, the CNAME is added automatically
+4. If not, update your domain registrar's nameservers to Cloudflare's
+   (shown under **Websites → roconsulting.uk → DNS → Nameservers** in Cloudflare)
 
 ---
 
-## Security
+## Viewing contact form submissions
 
-The admin page (`/admin`) shows all projects. Protect it with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/self-hosted-apps/):
+All enquiries are stored in your D1 database. To view them:
 
-1. Go to **Zero Trust** → **Access** → **Applications**
-2. Add application for `platform.com/admin*`
-3. Configure authentication policy
+- Cloudflare dashboard → **D1 → roc-contacts → Console**
+- Run: `SELECT * FROM enquiries ORDER BY submitted_at DESC;`
 
----
-
-## Troubleshooting
-
-| Problem                                     | Solution                                                                                                                                                 |
-| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "Dispatch namespace not found"              | Enable Workers for Platforms: [dash.cloudflare.com/?to=/:account/workers-for-platforms](https://dash.cloudflare.com/?to=/:account/workers-for-platforms) |
-| "Custom domain not working"                 | Check Zone ID and DNS records are correct                                                                                                                |
-| "Custom hostnames require additional setup" | Custom hostname tokens are auto-provisioned during Deploy to Cloudflare                                                                                  |
-| "404 on deployed sites"                     | Ensure uploaded files include `index.html` at the root                                                                                                   |
-| Database errors                             | Visit `/admin` to check status, or `/init` to reset                                                                                                      |
-
-**View logs:**
-
-```bash
-npx wrangler tail
-```
+You will also receive an email notification at ozretich.roc@gmail.com for each submission (via MailChannels, which is free with Cloudflare Workers).
 
 ---
 
-## Prerequisites
+## Updating the site later
 
-- **Cloudflare Account** with Workers for Platforms enabled
-  - [Purchase Workers for Platforms](https://dash.cloudflare.com/?to=/:account/workers-for-platforms) or contact sales (Enterprise)
-- **Node.js 18+**
+To update content, edit `index.html` locally, then:
 
----
+1. Cloudflare Pages dashboard → your project → **Deployments → Upload assets**
+2. Re-upload the updated files
 
-## Learn More
-
-- [Workers for Platforms Docs](https://developers.cloudflare.com/cloudflare-for-platforms/workers-for-platforms/)
-- [Custom Hostnames](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/)
-- [D1 Database](https://developers.cloudflare.com/d1/)
-- [Hono Framework](https://hono.dev/)
-
-## License
-
-Apache-2.0
+Or connect your Pages project to a GitHub repo for automatic deploys on push.

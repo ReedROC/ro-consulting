@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ROC Consulting — Independent Aquaculture Advisory</title>
+  <meta name="description" content="ROC delivers evidence-led advisory services at the intersection of aquaculture, climate resilience, and geospatial intelligence across some of the world's most complex environments." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://roconsulting.uk/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ROC Consulting — Independent Aquaculture Advisory" />
+  <meta property="og:description" content="Evidence-led advisory at the intersection of aquaculture, climate resilience, and geospatial intelligence." />
+  <meta property="og:url" content="https://roconsulting.uk/" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --ink: #0f1410;
+      --ink2: #2a3328;
+      --moss: #1d3a2a;
+      --sage: #3d6b4f;
+      --pale: #f4f1eb;
+      --warm: #e8e2d5;
+      --accent: #b5863a;
+      --light-text: #6b7c6f;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--pale); color: var(--ink); overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15, 20, 16, 0.97);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 56px;
+      transform: translateY(-100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    nav.visible { transform: translateY(0); }
+    .nav-logo { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.2rem; letter-spacing: .05em; text-decoration: none; }
+    .nav-logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul li a { color: rgba(255,255,255,.75); text-decoration: none; font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
+    nav ul li a:hover { color: #fff; }
+    .nav-cta { font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--sage); padding: .4rem 1.1rem; text-decoration: none; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; background: #0f1a12;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 6rem 3rem 4rem; position: relative; overflow: hidden;
+    }
+    .hero-photo-strip {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 45%;
+      display: grid; grid-template-rows: 1fr 1fr 1fr; gap: 2px; opacity: .5;
+    }
+    .hero-photo-strip div { background: var(--moss); overflow: hidden; }
+    .hero-photo-strip div img { width: 100%; height: 100%; object-fit: cover; filter: sepia(20%) contrast(1.1); }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow { font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: block; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.1; color: #f0ede6; max-width: 16ch; margin-bottom: 1.5rem; }
+    .hero h1 em { color: var(--accent); font-style: italic; }
+    .hero-sub { font-size: 1.05rem; color: rgba(240,237,230,.65); max-width: 42ch; line-height: 1.7; margin-bottom: 2.5rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── BUTTONS ── */
+    .btn-primary { background: var(--accent); color: #fff; padding: .75rem 1.75rem; font-size: .85rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; display: inline-block; }
+    .btn-outline { border: 1px solid rgba(240,237,230,.4); color: rgba(240,237,230,.85); padding: .75rem 1.75rem; font-size: .85rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; background: transparent; cursor: pointer; display: inline-block; }
+    .btn-outline:hover { border-color: rgba(240,237,230,.8); color: #fff; }
+
+    /* ── STATS BELT ── */
+    .stats-belt { background: var(--moss); display: grid; grid-template-columns: repeat(4, 1fr); }
+    .stat-cell { padding: 2.5rem 2rem; border-right: 1px solid rgba(255,255,255,.1); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #f0ede6; display: block; }
+    .stat-label { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(240,237,230,.55); margin-top: .3rem; display: block; }
+
+    /* ── SECTIONS ── */
+    .section-pad { padding: 6rem 3rem; }
+    .section-tag { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15; color: var(--ink); max-width: 22ch; }
+    .section-body { font-size: 1rem; color: var(--light-text); line-height: 1.75; max-width: 48ch; margin-top: 1.25rem; }
+
+    /* ── SERVICES ── */
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 4rem; border: 1px solid var(--warm); }
+    .service-card { padding: 2rem 1.75rem; background: var(--pale); border-right: 1px solid var(--warm); }
+    .service-card:last-child { border-right: none; }
+    .svc-number { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--warm); margin-bottom: 1rem; display: block; }
+    .svc-title { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: .6rem; }
+    .svc-body { font-size: .85rem; color: var(--light-text); line-height: 1.7; }
+
+    /* ── STORY SPLIT ── */
+    .story-split { display: grid; grid-template-columns: 1fr 1fr; min-height: 60vh; }
+    .story-split.reverse { direction: rtl; }
+    .story-split.reverse > * { direction: ltr; }
+    .story-photo { position: relative; overflow: hidden; }
+    .story-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(10%) contrast(1.05); }
+    .story-photo .caption { position: absolute; bottom: 0; left: 0; right: 0; padding: .75rem 1rem; background: rgba(15,20,16,.7); font-size: .72rem; color: rgba(240,237,230,.7); letter-spacing: .04em; font-style: italic; }
+    .story-text { background: #0f1a12; color: #f0ede6; padding: 5rem 3.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .story-text .section-title { color: #f0ede6; }
+    .story-text .section-body { color: rgba(240,237,230,.65); }
+    .story-text blockquote { border-left: 3px solid var(--accent); padding-left: 1.25rem; margin-top: 2rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(240,237,230,.85); line-height: 1.6; }
+
+    /* ── CLIENTS ── */
+    .clients-belt { background: var(--warm); padding: 3rem; }
+    .clients-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--light-text); text-align: center; margin-bottom: 2rem; }
+    .clients-list { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; justify-content: center; align-items: center; }
+    .client-pill { font-size: .82rem; font-weight: 500; color: var(--ink2); letter-spacing: .04em; padding: .4rem 1rem; border: 1px solid rgba(42,51,40,.2); }
+
+    /* ── SECTORS ── */
+    .sectors-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+    .sector-card { border: 1px solid var(--warm); padding: 2rem; background: var(--pale); position: relative; overflow: hidden; }
+    .sector-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--sage); }
+    .sector-title { font-weight: 500; color: var(--ink); margin-bottom: .5rem; font-size: .95rem; }
+    .sector-body { font-size: .82rem; color: var(--light-text); line-height: 1.7; }
+
+    /* ── GALLERY ── */
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 3rem; }
+    .gallery-item { overflow: hidden; background: var(--moss); position: relative; height: 200px; }
+    .gallery-item.tall { grid-row: span 2; height: 404px; }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(15%) contrast(1.1); transition: transform .4s ease, filter .3s ease; }
+    .gallery-item:hover img { transform: scale(1.03); filter: sepia(0%) contrast(1.1); }
+
+    /* ── CTA ── */
+    .cta-section { background: var(--sage); color: #fff; padding: 6rem 3rem; text-align: center; }
+    .cta-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); margin-bottom: 1rem; }
+    .cta-section p { color: rgba(255,255,255,.75); max-width: 44ch; margin: 0 auto 2.5rem; font-size: 1rem; line-height: 1.7; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .cta-section .btn-primary { background: #fff; color: var(--sage); }
+    .cta-section .btn-outline { border-color: rgba(255,255,255,.5); color: #fff; }
+
+    /* ── CONTACT MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,16,11,.85); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--pale); padding: 3rem; max-width: 480px; width: 90%; position: relative; }
+    .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: .5rem; }
+    .modal p { color: var(--light-text); font-size: .9rem; margin-bottom: 1.75rem; line-height: 1.6; }
+    .modal-close { position: absolute; top: 1rem; right: 1.25rem; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--light-text); }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--light-text); margin-bottom: .4rem; }
+    .form-group input,
+    .form-group textarea { width: 100%; padding: .7rem .9rem; border: 1px solid var(--warm); background: #fff; font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--ink); outline: none; transition: border-color .2s; }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--sage); }
+    .form-group textarea { height: 120px; resize: vertical; }
+    .form-submit { background: var(--sage); color: #fff; border: none; padding: .85rem 2rem; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; width: 100%; }
+    .form-submit:hover { background: var(--moss); }
+    .form-success { display: none; text-align: center; padding: 2rem 0; }
+    .form-success p { color: var(--sage); font-size: 1rem; font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer { background: #0b130d; color: rgba(240,237,230,.5); padding: 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; color: #f0ede6; font-size: 1.1rem; }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: rgba(240,237,230,.5); text-decoration: none; font-size: .8rem; letter-spacing: .05em; transition: color .2s; }
+    .footer-links a:hover { color: #f0ede6; }
+    .footer-meta { font-size: .75rem; }
+
+    /* ── SCROLL FADE ── */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <a class="nav-logo" href="/">RO<span>C</span></a>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#fieldwork">Field Work</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact" id="nav-contact-btn">Get in touch</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Introduction">
+    <div class="hero-photo-strip" aria-hidden="true">
+      <div><img src="images/lobster-farms-vietnam.jpg" alt="" /></div>
+      <div><img src="images/fish-farm-kivu.jpg" alt="" /></div>
+      <div><img src="images/field-mission-cdi.jpg" alt="" /></div>
+    </div>
+    <div class="hero-content fade-in">
+      <span class="hero-eyebrow">Independent aquaculture consultancy</span>
+      <h1>Where the data ends, <em>the fieldwork begins.</em></h1>
+      <p class="hero-sub">ROC delivers evidence-led advisory services at the intersection of aquaculture, climate resilience, and geospatial intelligence — across some of the world's most complex environments.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#contact" id="hero-contact-btn">Work with ROC</a>
+        <a class="btn-outline" href="#services">Our approach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-belt" aria-label="Key figures">
+    <div class="stat-cell"><span class="stat-num">15+</span><span class="stat-label">Countries worked in</span></div>
+    <div class="stat-cell"><span class="stat-num">20+</span><span class="stat-label">Years technical writing</span></div>
+    <div class="stat-cell"><span class="stat-num">3</span><span class="stat-label">Peer-reviewed publications</span></div>
+    <div class="stat-cell"><span class="stat-num">PhD</span><span class="stat-label">Candidate, Univ. Stirling</span></div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section-pad" id="services" style="background:#fff;" aria-labelledby="services-title">
+    <div class="fade-in">
+      <span class="section-tag">What we do</span>
+      <h2 class="section-title" id="services-title">Intelligence-led advisory for aquaculture in transition</h2>
+      <p class="section-body">ROC combines deep sectoral knowledge with spatial analysis and on-the-ground field experience to deliver advisory products that hold up in the real world — not just on paper.</p>
+    </div>
+    <div class="services-grid fade-in">
+      <div class="service-card">
+        <span class="svc-number">01</span>
+        <div class="svc-title">Sector &amp; Suitability Assessment</div>
+        <p class="svc-body">Multi-criteria aquaculture suitability modelling using remote sensing, CMIP climate scenarios, and socioeconomic layers — from desk review to field verification.</p>
+      </div>
+      <div class="service-card">
+        <span class="svc-number">02</span>
+        <div class="svc-title">Climate Risk &amp; Resilience</div>
+        <p class="svc-body">Translating complex climate projections into actionable risk intelligence for investors, development banks, and aquaculture operators across Africa and Asia.</p>
+      </div>
+      <div class="service-card">
+        <span class="svc-number">03</span>
+        <div class="svc-title">Technical Knowledge Products</div>
+        <p class="svc-body">Training materials, workshop delivery, and learning products that make complex geospatial and environmental data accessible to diverse stakeholder groups.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY 1 -->
+  <section class="story-split" id="about" aria-labelledby="story1-title">
+    <div class="story-photo fade-in">
+      <img src="images/drone-survey-cdi.jpg" alt="Drone survey near Yamoussoukro, Côte d'Ivoire, 2022" />
+      <div class="caption">Drone survey near Yamoussoukro, Côte d'Ivoire, 2022</div>
+    </div>
+    <div class="story-text fade-in">
+      <span class="section-tag">Our approach</span>
+      <h2 class="section-title" id="story1-title">Rigour in the office. Presence in the field.</h2>
+      <p class="section-body">The most robust advisory products are built on direct evidence. ROC leads multi-week field missions — conducting interviews, fish sampling, drone surveys, and value-chain assessments — in conditions where desktop analysis simply cannot reach.</p>
+      <blockquote>"Real insight comes from being there."</blockquote>
+    </div>
+  </section>
+
+  <!-- STORY 2 -->
+  <section class="story-split reverse" aria-labelledby="story2-title">
+    <div class="story-photo fade-in">
+      <img src="images/government-presentation-abidjan.jpg" alt="Presenting mission findings to government in Abidjan, Côte d'Ivoire, 2022" />
+      <div class="caption">Presenting mission findings to government in Abidjan, Côte d'Ivoire, 2022</div>
+    </div>
+    <div class="story-text fade-in">
+      <span class="section-tag">Knowledge transfer</span>
+      <h2 class="section-title" id="story2-title">Complexity made clear, for every audience.</h2>
+      <p class="section-body">From World Bank-funded sector reports to in-person training for government stakeholders, ROC specialises in translating multifactorial data and models into clear, usable intelligence — regardless of the audience's technical starting point.</p>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <div class="clients-belt fade-in">
+    <p class="clients-label">Organisations we have worked with</p>
+    <div class="clients-list" aria-label="Client organisations">
+      <span class="client-pill">World Bank</span>
+      <span class="client-pill">Aquaculture Stewardship Council</span>
+      <span class="client-pill">Gatsby Africa</span>
+      <span class="client-pill">Stanford University</span>
+      <span class="client-pill">University of Stirling</span>
+      <span class="client-pill">Longline Environment</span>
+    </div>
+  </div>
+
+  <!-- SECTORS -->
+  <section class="section-pad sectors-section" id="sectors" style="background:#fff;" aria-labelledby="sectors-title">
+    <div class="fade-in">
+      <span class="section-tag">Who we serve</span>
+      <h2 class="section-title" id="sectors-title">Built for the actors driving responsible aquaculture</h2>
+    </div>
+    <div class="sectors-grid fade-in">
+      <div class="sector-card"><div class="sector-title">Governments &amp; Regulators</div><p class="sector-body">Evidence-based sector assessments and policy intelligence for responsible aquaculture development and licensing decisions.</p></div>
+      <div class="sector-card"><div class="sector-title">Development Finance Institutions</div><p class="sector-body">Due diligence, suitability modelling, and risk intelligence to underpin responsible investment in aquatic industries.</p></div>
+      <div class="sector-card"><div class="sector-title">Conservation &amp; NGOs</div><p class="sector-body">Data-led impact assessments, systematic reviews, and knowledge-transfer products that demonstrate measurable outcomes.</p></div>
+      <div class="sector-card"><div class="sector-title">Technology &amp; AI Platforms</div><p class="sector-body">Domain expertise and LLM application support for platforms building tools at the intersection of environmental data and AI.</p></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section-pad gallery-section" id="fieldwork" style="background: var(--ink);" aria-labelledby="gallery-title">
+    <div class="fade-in">
+      <span class="section-tag">From the field</span>
+      <h2 class="section-title" id="gallery-title" style="color:#f0ede6;">Across fifteen countries. One constant standard.</h2>
+      <p class="section-body" style="color:rgba(240,237,230,.6);">ROC has conducted field missions across West Africa, East Africa, and South-East Asia — from freshwater fisheries in Côte d'Ivoire to seaweed farms in Vietnam.</p>
+    </div>
+    <div class="gallery-grid fade-in">
+      <div class="gallery-item tall"><img src="images/fish-farm-aboisso.jpg" alt="Fish farm near Aboisso, Côte d'Ivoire" /></div>
+      <div class="gallery-item"><img src="images/seaweed-farm-vietnam.jpg" alt="Seaweed farm near Nha Trang, Vietnam" /></div>
+      <div class="gallery-item"><img src="images/lake-kivu-farm.jpg" alt="Commercial fish farm on Lake Kivu, Rwanda" /></div>
+      <div class="gallery-item wide"><img src="images/seaweed-harvest-vietnam.jpg" alt="Vietnamese farmer harvesting seaweed longlines, Nha Trang" /></div>
+      <div class="gallery-item"><img src="images/snail-survey-bandama.jpg" alt="Snail surveys along the Bandama river, Côte d'Ivoire" /></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section fade-in" aria-labelledby="cta-title">
+    <h2 id="cta-title">Let's work together</h2>
+    <p>ROC is available for project-based engagements, retainer advisory, and expert input on aquaculture, climate risk, and geospatial analysis worldwide.</p>
+    <div class="cta-btns">
+      <a class="btn-primary" href="#contact" id="cta-contact-btn">Get in touch</a>
+      <a class="btn-outline" href="https://calendly.com/ozretich-roc" target="_blank" rel="noopener">Schedule a call</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">RO<span>C</span> Consulting</div>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/reedwozretich" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://bsky.app/profile/ro-consulting.bsky.social" target="_blank" rel="noopener">Bluesky</a>
+      <a href="https://www.instagram.com/roconsultings/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="footer-meta">Hopeman, Scotland, UK &nbsp;·&nbsp; <a href="mailto:ozretich.roc@gmail.com" style="color:inherit;">ozretich.roc@gmail.com</a></div>
+  </footer>
+
+  <!-- CONTACT MODAL -->
+  <div class="modal-overlay" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      <h3 id="modal-title">Get in touch</h3>
+      <p>Tell me about your project and I'll get back to you within two working days.</p>
+      <form id="contact-form" novalidate>
+        <div class="form-group">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" required autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="cf-org">Organisation (optional)</label>
+          <input type="text" id="cf-org" name="organisation" autocomplete="organization" />
+        </div>
+        <div class="form-group">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send message</button>
+      </form>
+      <div class="form-success" id="form-success">
+        <p>Thank you — I'll be in touch shortly.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Scroll-triggered nav ──
+    const nav = document.getElementById('main-nav');
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > 80 && y < lastY) nav.classList.add('visible');
+      else if (y <= 80 || y > lastY) nav.classList.remove('visible');
+      lastY = y;
+    }, { passive: true });
+
+    // ── Scroll fade-in ──
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Contact modal ──
+    const modal = document.getElementById('contact-modal');
+    const openModal = () => { modal.classList.add('open'); document.body.style.overflow = 'hidden'; };
+    const closeModal = () => { modal.classList.remove('open'); document.body.style.overflow = ''; };
+
+    ['nav-contact-btn','hero-contact-btn','cta-contact-btn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', e => { e.preventDefault(); openModal(); });
+    });
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Contact form submission ──
+    document.getElementById('contact-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('.form-submit');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        organisation: form.organisation.value.trim(),
+        message: form.message.value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        btn.textContent = 'Send message';
+        btn.disabled = false;
+        alert('Something went wrong — please email ozretich.roc@gmail.com directly.');
+      }
+    });
+  </script>
+</body>
+</html>
