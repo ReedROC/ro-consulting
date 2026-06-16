@@ -37,6 +37,9 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'DM Sans', sans-serif; background: var(--pale); color: var(--ink); overflow-x: hidden; }
 
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .footer-logo img { height: 34px; width: auto; display: block; }
+
     /* &mdash;&mdash; NAV &mdash;&mdash; */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -49,7 +52,6 @@
     }
     nav.visible { transform: translateY(0); }
     .nav-logo { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.2rem; letter-spacing: .05em; text-decoration: none; }
-    .nav-logo span { color: var(--accent); }
     nav ul { list-style: none; display: flex; gap: 2rem; }
     nav ul li a { color: rgba(255,255,255,.75); text-decoration: none; font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; transition: color .2s; }
     nav ul li a:hover { color: #fff; }
@@ -163,7 +165,6 @@
     /* &mdash;&mdash; FOOTER &mdash;&mdash; */
     footer { background: #0b130d; color: rgba(240,237,230,.5); padding: 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .footer-logo { font-family: 'Playfair Display', serif; color: #f0ede6; font-size: 1.1rem; }
-    .footer-logo span { color: var(--accent); }
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { color: rgba(240,237,230,.5); text-decoration: none; font-size: .8rem; letter-spacing: .05em; transition: color .2s; }
     .footer-links a:hover { color: #f0ede6; }
@@ -178,7 +179,7 @@
 
   <!-- NAV -->
   <nav id="main-nav" role="navigation" aria-label="Main navigation">
-    <a class="nav-logo" href="/">RO<span>C</span></a>
+    <a class="nav-logo" href="/"><img src="/images/ROC_logo_White.png" alt="ROC Consulting" /></a>
     <ul>
       <li><a href="#services">Services</a></li>
       <li><a href="#sectors">Sectors</a></li>
@@ -322,7 +323,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">RO<span>C</span> Consulting</div>
+    <div class="footer-logo"><img src="/images/ROC_logo_White.png" alt="ROC Consulting" /></div>
     <div class="footer-links">
       <a href="https://www.linkedin.com/in/reedwozretich" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://bsky.app/profile/ro-consulting.bsky.social" target="_blank" rel="noopener">Bluesky</a>
