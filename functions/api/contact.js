@@ -1,29 +1,37 @@
 /**
- * ROC Consulting - Contact Form Handler
- * Cloudflare Pages Function (auto-deployed from functions/ directory)
+ * ROC Consulting — Contact Form Pages Function
+ * File location in repo: functions/api/contact.js
+ *
  * Handles POST /api/contact
- * Stores submissions in D1
+ * - Validates input
+ * - Stores submission in D1 (binding: DB)
+ * - Sends email notification via Resend (secret: RESEND_API_KEY)
  */
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
 
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://roconsulting.uk',
-  };
+export async function onRequestOptions() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
 
-  // Parse body
-  let data;
+export async function onRequestPost({ request, env }) {
+  const headers = { 'Content-Type': 'application/json', ...CORS_HEADERS };
+
+  // ── Parse body ──
+  let body;
   try {
-    data = await request.json();
+    body = await request.json();
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers });
   }
 
-  const { name, email, organisation, message } = data;
+  const { name, email, organisation, message } = body;
 
-  // Validation
+  // ── Validate required fields ──
   if (!name || !email || !message) {
     return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400, headers });
   }
@@ -31,7 +39,7 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Invalid email' }), { status: 400, headers });
   }
 
-  // Store in D1
+  // ── Store in D1 ──
   try {
     await env.DB.prepare(
       `INSERT INTO enquiries (name, email, organisation, message, submitted_at)
@@ -42,46 +50,38 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Database error' }), { status: 500, headers });
   }
 
-  // Send email notification via MailChannels
+  // ── Send email via Resend ──
   try {
-    await fetch('https://api.mailchannels.net/tx/v1/send', {
+    const resendRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+      },
       body: JSON.stringify({
-        personalizations: [{
-          to: [{ email: 'ozretich.roc@gmail.com', name: 'Reed Ozretich' }],
-        }],
-        from: { email: 'noreply@roconsulting.uk', name: 'ROC Site' },
-        reply_to: { email, name },
+        from: 'ROC Site <noreply@roconsulting.uk>',
+        to: ['ozretich.roc@gmail.com'],
+        reply_to: email,
         subject: `New enquiry from ${name}`,
-        content: [{
-          type: 'text/plain',
-          value: [
-            `Name: ${name}`,
-            `Email: ${email}`,
-            `Organisation: ${organisation || 'Not provided'}`,
-            '',
-            `Message:`,
-            message,
-          ].join('\n'),
-        }],
+        text: [
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Organisation: ${organisation || 'Not provided'}`,
+          '',
+          'Message:',
+          message,
+        ].join('\n'),
       }),
     });
+
+    if (!resendRes.ok) {
+      const errBody = await resendRes.text();
+      console.error('Resend error:', resendRes.status, errBody);
+    }
   } catch (err) {
-    // Email failure is non-fatal - submission is saved to D1
-    console.error('MailChannels send failed:', err);
+    // Email failure is non-fatal — submission is already saved to D1
+    console.error('Resend fetch failed:', err);
   }
 
   return new Response(JSON.stringify({ ok: true }), { status: 200, headers });
-}
-
-// Handle CORS preflight
-export async function onRequestOptions() {
-  return new Response(null, {
-    headers: {
-      'Access-Control-Allow-Origin': 'https://roconsulting.uk',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
 }
